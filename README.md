@@ -17,6 +17,16 @@ You just have to save the lon and lan parameters in a custom field. It's possibl
 
 In your page just insert the shortcode: [osm-cats] 
 
+Open the plugin settings page for basic settings like:
+
+- map dimensions
+- map center point
+- initial zoom faktor
+- exclude categories
+- article custom field for marker lon and lat parameters
+- marker popup content
+- marker images path
+
 Installation 
 -------------
 
