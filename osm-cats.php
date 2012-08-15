@@ -199,6 +199,7 @@ function osm_cats_code( $atts ){
   // get option for marker image path
   $marker_image_path = get_option('osm_cats_marker_images_path');
   
+  // if no center is defined in the settings set center to 0,0 and zoom to 0, echo info message
   if($map_center == ',') {
     $map_center = '0,0';
     $zoom_level = 0;
@@ -210,12 +211,14 @@ function osm_cats_code( $atts ){
     'exclude' => $exclude_cats,
   );
   $categories=get_categories($args);
+  
   // get posts for markers
   $args = array(
     'posts_per_page' => -1,
     'category__not_in' => explode(',',$exclude_cats)
     );
   query_posts($args);
+  
   // the markup starts here
   ?>
   <style>
@@ -231,15 +234,18 @@ function osm_cats_code( $atts ){
     var zoom;
     var center
     
+    // marker popup style
     AutoSizeAnchored = OpenLayers.Class(OpenLayers.Popup.Anchored, {
       'autoSize': true
     });
     
+    // inital function for the osm map
     function init(){
       map = new OpenLayers.Map('mapdiv');
       map.addLayer(new OpenLayers.Layer.OSM());       
                  
       <?php
+      // create a layer for every category 
       foreach($categories as $category) {
         echo "markers_$category->cat_ID = new OpenLayers.Layer.Markers('$category->cat_name');";
         echo "map.addLayer(markers_$category->cat_ID);";
@@ -248,7 +254,9 @@ function osm_cats_code( $atts ){
 
       map.addControl(new OpenLayers.Control.LayerSwitcher());
       
+      // set zoom
       zoom = <?php echo $zoom_level; ?>;
+      // center map
       center = new OpenLayers.LonLat( <?php echo $map_center; ?> )
               .transform(
                 new OpenLayers.Projection("EPSG:4326"), // transform from WGS 1984
@@ -263,6 +271,7 @@ function osm_cats_code( $atts ){
       var ll, layer, popupContentHTML;
       
       <?php
+      // add a marker for every post
       if (have_posts()) {
         while (have_posts()) {
           $custom_icon = false;
@@ -307,6 +316,7 @@ function osm_cats_code( $atts ){
     
     function addMarker(ll, popupContentHTML, layer, icon) {
       
+      // create marker and popup
       var feature = new OpenLayers.Feature(layer, ll); 
       feature.closeBox = true;
       feature.popupClass = AutoSizeAnchored;
@@ -334,6 +344,7 @@ function osm_cats_code( $atts ){
       
     }
     
+    // init call
     init();
   </script>
   <?php
