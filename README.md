@@ -18,7 +18,7 @@ You just have to save the lon and lan parameters in a custom field. It's possibl
 In your page just insert the shortcode: [osm-cats] 
 
 Installation 
-==
+-------------
 
 Either:
 
@@ -31,8 +31,7 @@ Or:
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
 Changelog 
-==
+-------------
 
 1.0
-=
 * NEW: First release with basic features
