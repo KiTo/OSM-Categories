@@ -138,7 +138,7 @@ function osm_cats_plugin_options() {
           <input type="text" name="osm_cats_marker_images_path" value="<?php echo get_option('osm_cats_marker_images_path'); ?>" />
           <small>The absolute path to your marker images folder. If the path is correct you can see all your marker images below after saving.</small>
           <?php
-          if ($handle = opendir($_SERVER['DOCUMENT_ROOT'].get_option('osm_cats_marker_images_path'))) {
+          if (get_option('osm_cats_marker_images_path') && $handle = opendir($_SERVER['DOCUMENT_ROOT'].get_option('osm_cats_marker_images_path'))) {
             echo '<p>';
             while (false !== ($entry = readdir($handle))) {
               if ($entry != "." && $entry != "..") {
