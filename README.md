@@ -1,5 +1,5 @@
 OSM Categories
-===================
+=====
 Contributors: Guido Handrick
 Tags: OpenStreetMap, geotag, geolocation, geocache, geocaching, OSM, travelogue, travelblog, OpenLayers, Open Layers, Open Street Map, marker, geocode, geotagging
 Requires at least: 3.0
