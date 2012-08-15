@@ -37,6 +37,11 @@ Or:
 1. Upload the `osm-categories` directory to the `/wp-content/plugins` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
+== Screenshots ==
+
+1. screenshot-1.png
+1. screenshot-2.png
+
 == Changelog ==
 
 = 1.0 =
