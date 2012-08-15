@@ -4,6 +4,8 @@ Tags: OpenStreetMap, geotag, geolocation, geocache, geocaching, OSM, travelogue,
 Requires at least: 3.0
 Tested up to: 3.4.1
 Stable tag: 1.0 
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 OpenStreetMap plugin to embed a map with markers to articles from different categories in different map layers. 
 
@@ -39,8 +41,8 @@ Or:
 
 == Screenshots ==
 
-1. screenshot-1.png
-1. screenshot-2.png
+1. The embeded OSM map
+2. The settings page
 
 == Changelog ==
 
