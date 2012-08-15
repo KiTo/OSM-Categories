@@ -1,5 +1,5 @@
 OSM Categories
-=====
+==============
 Contributors: Guido Handrick
 Tags: OpenStreetMap, geotag, geolocation, geocache, geocaching, OSM, travelogue, travelblog, OpenLayers, Open Layers, Open Street Map, marker, geocode, geotagging
 Requires at least: 3.0
@@ -10,7 +10,7 @@ OpenStreetMap plugin to embed a map with markers to articles from different cate
 
 
 Description
-==
+-------------
 
 OSM Categories embed an OpenStreetMap map to your page by using the OpenLayer API. For every category in your blog a differnt layer on your map show markers for every article with an geotag.
 You just have to save the lon and lan parameters in a custom field. It's possible to use different marker images for every category.
