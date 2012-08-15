@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: OSM Categories
-Plugin URI: http://URI_Of_Page_Describing_Plugin_and_Updates
+Plugin URI: https://github.com/KiTo/OSM-Categories
 Description: OpenStreetMap plugin to embed a map with markers to articles from different categories on different layers.
 Version: 1.0
 Author: Guido Handrick
