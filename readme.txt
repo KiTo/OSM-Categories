@@ -46,5 +46,5 @@ Or:
 
 == Changelog ==
 
-= 1.0 =
+= 0.1 =
 * NEW: First release with basic features
