@@ -351,5 +351,5 @@ function osm_cats_code( $atts ){
   wp_reset_query();
 }
 
-add_shortcode( 'osm_cats', 'osm_cats_code' );
+add_shortcode( 'osm-cats', 'osm_cats_code' );
 ?>
