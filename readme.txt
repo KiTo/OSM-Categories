@@ -27,6 +27,18 @@ Open the plugin settings page for basic settings like:
 * marker popup content
 * marker images path
 
+It's still BETA so please send me feedback and your ideas! Thanx a lot.
+
+== Frequently Asked Questions ==
+
+= Why i see the hole world on the map? =
+
+It's necessary to define a map center point on the plugin settings page.
+
+= Where can i give you feedback? =
+
+I sink the best would be here: https://github.com/KiTo/OSM-Categories
+
 == Installation ==
 
 Either:
@@ -45,6 +57,10 @@ Or:
 2. The settings page
 
 == Changelog ==
+
+= 0.2 =
+* FIX: Use marker path from settings
+* NEW: Possibility to disable zoom wheel
 
 = 0.1 =
 * NEW: First release with basic features

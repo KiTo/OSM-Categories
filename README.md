@@ -5,6 +5,8 @@ Tags: OpenStreetMap, geotag, geolocation, geocache, geocaching, OSM, travelogue,
 Requires at least: 3.0
 Tested up to: 3.4.1
 Stable tag: 1.0 
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 OpenStreetMap plugin to embed a map with markers to articles from different categories in different map layers. 
 
@@ -27,6 +29,19 @@ Open the plugin settings page for basic settings like:
 - marker popup content
 - marker images path
 
+It's still BETA so please send me feedback and your ideas! Thanx a lot.
+
+Frequently Asked Questions
+-------------
+
+= Why i see the hole world on the map? =
+
+It's necessary to define a map center point on the plugin settings page.
+
+= Where can i give you feedback? =
+
+I sink the best would be here: https://github.com/KiTo/OSM-Categories
+
 Installation 
 -------------
 
@@ -42,6 +57,10 @@ Or:
 
 Changelog 
 -------------
+
+0.2
+* FIX: Use marker path from settings
+* NEW: Possibility to disable zoom wheel
 
 0.1
 * NEW: First release with basic features

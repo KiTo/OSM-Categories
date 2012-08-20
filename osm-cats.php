@@ -34,6 +34,7 @@ function register_osm_cats_settings() {
   register_setting( 'osm_cats', 'osm_cats_center_lon' );
   register_setting( 'osm_cats', 'osm_cats_center_lat' );
   register_setting( 'osm_cats', 'osm_cats_zoom_level' );
+  register_setting( 'osm_cats', 'osm_cats_disable_zoom_wheel' );
   register_setting( 'osm_cats', 'osm_cats_exclude_cats' );
   register_setting( 'osm_cats', 'osm_cats_marker_custom_field' );
   register_setting( 'osm_cats', 'osm_cats_marker_show_thumbnail' );
@@ -79,6 +80,14 @@ function osm_cats_plugin_options() {
         <td>
           <input type="text" name="osm_cats_zoom_level" value="<?php echo get_option('osm_cats_zoom_level'); ?>" />
           <small>Default is 12, the OSM values range is from 0 to 18.</small>
+        </td>
+      </tr>
+      
+      <tr valign="top">
+        <th scope="row">Zoom Wheel</th>
+        <td>
+          <input type="checkbox" name="osm_cats_disable_zoom_wheel" id="osm_cats_disable_zoom_wheel" value="1" <?php checked( '1', get_option( 'osm_cats_disable_zoom_wheel' ) ); ?> />
+          <label for="osm_cats_disable_zoom_wheel">Disable zoom by mouse wheel or touchpad</label><br />
         </td>
       </tr>
       
@@ -184,6 +193,9 @@ function osm_cats_code( $atts ){
   // get option for map zoom level, if not set switch to 12 by default
   $zoom_level_check = get_option('osm_cats_zoom_level');
   $zoom_level = ($zoom_level_check)?$zoom_level_check:12;
+  
+  // get options for disable zoom wheel
+  $disable_zoom_wheel = get_option('osm_cats_disable_zoom_wheel');
 
   // get exluded categories
   $exclude_cats = get_option('osm_cats_exclude_cats');
@@ -242,7 +254,7 @@ function osm_cats_code( $atts ){
     // inital function for the osm map
     function init(){
       map = new OpenLayers.Map('mapdiv');
-      map.addLayer(new OpenLayers.Layer.OSM());       
+      map.addLayer(new OpenLayers.Layer.OSM());     
                  
       <?php
       // create a layer for every category 
@@ -253,6 +265,16 @@ function osm_cats_code( $atts ){
       ?>
 
       map.addControl(new OpenLayers.Control.LayerSwitcher());
+      
+      <?php
+      // disable mouse zoom wheel if checked
+      if ($disable_zoom_wheel) {
+        echo "controls = map.getControlsByClass('OpenLayers.Control.Navigation');";
+        echo "for(var i = 0; i < controls.length; ++i)";
+        echo "controls[i].disableZoomWheel();";
+      }
+      ?>
+      
       
       // set zoom
       zoom = <?php echo $zoom_level; ?>;
@@ -295,7 +317,7 @@ function osm_cats_code( $atts ){
               list($width, $height)= getimagesize($image_path); 
               echo "size = new OpenLayers.Size(".$width.",".$height.");";
               echo "offset = new OpenLayers.Pixel(-(size.w/2), -size.h);";
-              echo "icon = new OpenLayers.Icon('/wp-content/osm-marker/marker_".$category[0]->term_id.".png', size, offset);"; 
+              echo "icon = new OpenLayers.Icon('".$marker_image_path."/marker_".$category[0]->term_id.".png', size, offset);"; 
               $custom_icon = true;
             } else {
               $image_path = $_SERVER['DOCUMENT_ROOT'].$marker_image_path."/marker.png";
@@ -303,7 +325,7 @@ function osm_cats_code( $atts ){
                 list($width, $height)= getimagesize($image_path); 
                 echo "size = new OpenLayers.Size(".$width.",".$height.");";
                 echo "offset = new OpenLayers.Pixel(-(size.w/2), -size.h);";
-                echo "icon = new OpenLayers.Icon('/wp-content/osm-marker/marker.png', size, offset);"; 
+                echo "icon = new OpenLayers.Icon('".$marker_image_path."/marker.png', size, offset);"; 
                 $custom_icon = true;
               }
             }
@@ -351,5 +373,5 @@ function osm_cats_code( $atts ){
   wp_reset_query();
 }
 
-add_shortcode( 'osm_cats', 'osm_cats_code' );
+add_shortcode( 'osm-cats', 'osm_cats_code' );
 ?>
