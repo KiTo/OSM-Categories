@@ -29,12 +29,18 @@ add_action( 'admin_menu', 'osm_cats_menu' );
 add_action( 'admin_init', 'register_osm_cats_settings' );
 
 function register_osm_cats_settings() {
+  register_setting( 'osm_cats', 'osm_cats_baselayer_osm' );
+  register_setting( 'osm_cats', 'osm_cats_baselayer_google_roadmap' );
+  register_setting( 'osm_cats', 'osm_cats_baselayer_google_satellite' );
+  register_setting( 'osm_cats', 'osm_cats_baselayer_google_hybrid' );
+  register_setting( 'osm_cats', 'osm_cats_baselayer_google_terrain' );
   register_setting( 'osm_cats', 'osm_cats_map_width' );
   register_setting( 'osm_cats', 'osm_cats_map_height' );
   register_setting( 'osm_cats', 'osm_cats_center_lon' );
   register_setting( 'osm_cats', 'osm_cats_center_lat' );
   register_setting( 'osm_cats', 'osm_cats_zoom_level' );
   register_setting( 'osm_cats', 'osm_cats_disable_zoom_wheel' );
+  register_setting( 'osm_cats', 'osm_cats_include_cats' );
   register_setting( 'osm_cats', 'osm_cats_exclude_cats' );
   register_setting( 'osm_cats', 'osm_cats_marker_custom_field' );
   register_setting( 'osm_cats', 'osm_cats_marker_show_thumbnail' );
@@ -56,8 +62,60 @@ function osm_cats_plugin_options() {
 
   <form method="post" action="options.php">
     <?php settings_fields( 'osm_cats' ); ?>
-    <h3>General OSM-map settings</h3>
+    
+    <h3>Base layer settings</h3>
     <table class="form-table">
+      <tr valign="top">
+        <th scope="row">Open Street Map</th>
+        <td>
+          <input type="checkbox" name="osm_cats_baselayer_osm" id="osm_cats_baselayer_osm" value="1" <?php checked( '1', get_option( 'osm_cats_baselayer_osm' ) ); ?> />
+          <label for="osm_cats_baselayer_osm">Show the Open Street Map Layer</label><br />
+        </td>
+      </tr>
+      
+      <tr valign="top">
+        <th scope="row">Google Roadmap</th>
+        <td>
+          <input type="checkbox" name="osm_cats_baselayer_google_roadmap" id="osm_cats_baselayer_google_roadmap" value="1" <?php checked( '1', get_option( 'osm_cats_baselayer_google_roadmap' ) ); ?> />
+          <label for="osm_cats_baselayer_google_roadmap">Show the Google Roadmap Layer</label><br />
+        </td>
+      </tr>
+      
+      <tr valign="top">
+        <th scope="row">Google Satellit</th>
+        <td>
+          <input type="checkbox" name="osm_cats_baselayer_google_satellite" id="osm_cats_baselayer_google_satellite" value="1" <?php checked( '1', get_option( 'osm_cats_baselayer_google_satellite' ) ); ?> />
+          <label for="osm_cats_baselayer_google_satellite">Show the Google Satellite Layer</label><br />
+        </td>
+      </tr>
+      
+      <tr valign="top">
+        <th scope="row">Google Hybrid</th>
+        <td>
+          <input type="checkbox" name="osm_cats_baselayer_google_hybrid" id="osm_cats_baselayer_google_hybrid" value="1" <?php checked( '1', get_option( 'osm_cats_baselayer_google_hybrid' ) ); ?> />
+          <label for="osm_cats_baselayer_google_hybrid">Show the Google Hybrid Layer</label><br />
+        </td>
+      </tr>
+      
+      <tr valign="top">
+        <th scope="row">Google Terrain</th>
+        <td>
+          <input type="checkbox" name="osm_cats_baselayer_google_terrain" id="osm_cats_baselayer_google_terrain" value="1" <?php checked( '1', get_option( 'osm_cats_baselayer_google_terrain' ) ); ?> />
+          <label for="osm_cats_baselayer_google_terrain">Show the Google Terrain Layer</label><br />
+        </td>
+      </tr>
+      
+    </table>
+    
+    <h3>General Map settings</h3>
+    <table class="form-table">
+      <tr valign="top">
+        <th scope="row">Zoom Wheel</th>
+        <td>
+          <input type="checkbox" name="osm_cats_disable_zoom_wheel" id="osm_cats_disable_zoom_wheel" value="1" <?php checked( '1', get_option( 'osm_cats_disable_zoom_wheel' ) ); ?> />
+          <label for="osm_cats_disable_zoom_wheel">Disable zoom by mouse wheel or touchpad</label><br />
+        </td>
+      </tr>
 
       <tr valign="top">
         <th scope="row">OSM map width</th>
@@ -104,6 +162,13 @@ function osm_cats_plugin_options() {
     <h3>Category settings</h3>
     <table class="form-table">
       <tr valign="top">
+        <th scope="row">Include categories</th>
+        <td>
+          <input type="text" name="osm_cats_include_cats" value="<?php echo get_option('osm_cats_include_cats'); ?>" />
+          <small>A comma seperatet list of category ID's.</small>
+        </td>
+      </tr>
+      <tr valign="top">
         <th scope="row">Exclude categories</th>
         <td>
           <input type="text" name="osm_cats_exclude_cats" value="<?php echo get_option('osm_cats_exclude_cats'); ?>" />
@@ -112,6 +177,7 @@ function osm_cats_plugin_options() {
       </tr>
     </table>
     <h3>Marker settings</h3>
+    <p>To place an article marker on the map fill out this custom field with the geographic coordinates seperatet by comma.</p>
     <table class="form-table">  
       <tr valign="top">
         <th scope="row">LonLat Custom Field</th>
@@ -153,7 +219,7 @@ function osm_cats_plugin_options() {
               if ($entry != "." && $entry != "..") {
                 if ($entry == 'marker.png') {
                   echo "<img src='".get_option('osm_cats_marker_images_path')."/".$entry."' alt='$entry' /> Marker for all categories.<br />";
-                } else {
+                } elseif (strpos($entry,'marker') === 0) {
                   echo "<img src='".get_option('osm_cats_marker_images_path')."/".$entry."' alt='$entry' /> Marker for category with ID ".str_replace('marker_','',str_replace('.png','',$entry)).".<br />";
                 }
               }
@@ -179,6 +245,13 @@ function osm_cats_code( $atts ){
   //
   $message = '';
 
+  // get baselayer
+   $baselayer_osm = get_option('osm_cats_baselayer_osm');
+   $baselayer_google_roadmap = get_option('osm_cats_baselayer_google_roadmap');
+   $baselayer_google_satellite = get_option('osm_cats_baselayer_google_satellite');
+   $baselayer_google_hybrid = get_option('osm_cats_baselayer_google_hybrid');
+   $baselayer_google_terrain = get_option('osm_cats_baselayer_google_terrain');
+
   // get option for map width, if not set switch to 100% by default
   $map_width_check = get_option('osm_cats_map_width');
   $map_width = ($map_width_check)?$map_width_check:'100%';
@@ -199,6 +272,7 @@ function osm_cats_code( $atts ){
 
   // get exluded categories
   $exclude_cats = get_option('osm_cats_exclude_cats');
+  $include_cats = get_option('osm_cats_include_cats');
 
   // get option for article lonlat custom field, if not set switch to LonLat by default
   $lonlat_custom_field_check = get_option('osm_cats_marker_custom_field');
@@ -225,10 +299,9 @@ function osm_cats_code( $atts ){
   $categories=get_categories($args);
   
   // get posts for markers
-  $args = array(
-    'posts_per_page' => -1,
-    'category__not_in' => explode(',',$exclude_cats)
-    );
+  $args = array('posts_per_page' => -1);
+  if( $include_cats ) $args['category__in'] = explode(',',$include_cats);
+  if( $exclude_cats ) $args['category__not_in'] = explode(',',$exclude_cats);
   query_posts($args);
   
   // the markup starts here
@@ -239,6 +312,7 @@ function osm_cats_code( $atts ){
   <div id="mapdiv" style="height: <?php echo $map_height; ?>; width: <?php echo $map_width; ?>;"></div>
   <?php echo ($message)?"<p>$message</p>":""; ?>
   <script src="http://www.openlayers.org/api/OpenLayers.js"></script>
+  <script src="http://maps.google.com/maps/api/js?sensor=false" ></script>
   <script>
     var map;
     var layer, markers, size, offset, icon;
@@ -254,8 +328,20 @@ function osm_cats_code( $atts ){
     // inital function for the osm map
     function init(){
       map = new OpenLayers.Map('mapdiv');
-      map.addLayer(new OpenLayers.Layer.OSM());     
-                 
+      
+      <?php
+      // add layers from settings
+      if ($baselayer_osm) echo "map.addLayer(new OpenLayers.Layer.OSM());";
+      if ($baselayer_google_terrain) echo "map.addLayers([new OpenLayers.Layer.Google(\"Google Terrain\", {type: google.maps.MapTypeId.TERRAIN},{'isBaseLayer':true})]);";
+      if ($baselayer_google_roadmap) echo "map.addLayers([new OpenLayers.Layer.Google(\"Google Roadmap\", {type: google.maps.MapTypeId.ROADMAP},{'isBaseLayer':true})]);";
+      if ($baselayer_google_satellite) echo "map.addLayers([new OpenLayers.Layer.Google(\"Google Satellite\", {type: google.maps.MapTypeId.SATELLITE},{'isBaseLayer':true})]);";
+      if ($baselayer_google_hybrid) echo "map.addLayers([new OpenLayers.Layer.Google(\"Google Hybrid\", {type: google.maps.MapTypeId.HYBRID},{'isBaseLayer':true})]);";
+      
+      // default osm layer             
+      if (!$baselayer_osm && !$baselayer_google_terrain && !$baselayer_google_roadmap && $baselayer_google_satellite && !$baselayer_google_hybrid)
+        echo "map.addLayer(new OpenLayers.Layer.OSM());";
+      ?>
+        
       <?php
       // create a layer for every category 
       foreach($categories as $category) {
