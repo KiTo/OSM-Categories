@@ -109,13 +109,6 @@ function osm_cats_plugin_options() {
     
     <h3>General Map settings</h3>
     <table class="form-table">
-      <tr valign="top">
-        <th scope="row">Zoom Wheel</th>
-        <td>
-          <input type="checkbox" name="osm_cats_disable_zoom_wheel" id="osm_cats_disable_zoom_wheel" value="1" <?php checked( '1', get_option( 'osm_cats_disable_zoom_wheel' ) ); ?> />
-          <label for="osm_cats_disable_zoom_wheel">Disable zoom by mouse wheel or touchpad</label><br />
-        </td>
-      </tr>
 
       <tr valign="top">
         <th scope="row">OSM map width</th>
