@@ -443,6 +443,15 @@ function osm_cats_code( $atts ){
               this.popup.toggle();
           }
           currentPopup = this.popup;
+          
+          // close all existing popups except the current
+          var pops = map.popups;
+          for(var a = 0; a < pops.length; a++){
+            if (map.popups[a] != currentPopup) {
+              map.popups[a].hide();
+            }
+          };
+          
           OpenLayers.Event.stop(evt);
       };
       
